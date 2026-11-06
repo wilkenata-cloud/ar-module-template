@@ -161,6 +161,70 @@ onUnmounted(() => {
         shadow
     ></a-plane>
 
+    <!-- Zwei blaue Kugeln, die sich umkreisen: der Drehpunkt (1 m über dem
+         Boden) rotiert endlos um die Y-Achse, die Kugeln sitzen gegenüber
+         und kreisen so umeinander. Tempo: `dur` (ms pro Umlauf). -->
+    <a-entity
+        id="orbit-pivot"
+        position="0 1 0"
+        animation="property: rotation; to: 0 360 0; dur: 4000; easing: linear; loop: true"
+    >
+      <a-sphere position="0.4 0 0" radius="0.15" color="#1e5bff" shadow="cast: true"></a-sphere>
+      <a-sphere position="-0.4 0 0" radius="0.15" color="#1e5bff" shadow="cast: true"></a-sphere>
+    </a-entity>
+
+    <!-- Kleine Insel mit Palme, links neben den Kugeln. Ganz aus
+         A-Frame-Grundformen, keine Assets nötig. -->
+    <a-entity id="island" position="-1.3 0 0">
+      <!-- Wasserring um die Insel -->
+      <a-cylinder radius="0.95" height="0.02" position="0 0.01 0" color="#1f8fbf" shadow="receive: true"></a-cylinder>
+      <!-- Sandhügel: flachgedrückte Halbkugel, untere Hälfte steckt im Boden -->
+      <a-sphere radius="0.6" scale="1 0.25 1" color="#c9a25a" shadow="receive: true"></a-sphere>
+
+      <!-- Palme. Der Drehpunkt liegt am Stammfuß: die ganze Palme neigt
+           sich langsam hin und her (±3°, 2,5 s). -->
+      <a-entity
+          id="palm"
+          position="0.05 0.13 0"
+          animation="property: rotation; from: 0 0 -3; to: 0 0 3; dir: alternate; dur: 2500; easing: easeInOutSine; loop: true"
+      >
+        <!-- Stamm: vier verschachtelte Segmente, jedes leicht weiter gekippt
+             → sanft gebogen -->
+        <a-entity rotation="0 0 4">
+          <a-cylinder radius="0.05" height="0.3" position="0 0.15 0" color="#8b5a2b" shadow="cast: true"></a-cylinder>
+          <a-entity position="0 0.3 0" rotation="0 0 5">
+            <a-cylinder radius="0.045" height="0.3" position="0 0.15 0" color="#7d5026" shadow="cast: true"></a-cylinder>
+            <a-entity position="0 0.3 0" rotation="0 0 6">
+              <a-cylinder radius="0.04" height="0.3" position="0 0.15 0" color="#8b5a2b" shadow="cast: true"></a-cylinder>
+              <a-entity position="0 0.3 0" rotation="0 0 6">
+                <a-cylinder radius="0.035" height="0.25" position="0 0.125 0" color="#7d5026" shadow="cast: true"></a-cylinder>
+
+                <!-- Krone: flattert zusätzlich etwas schneller, damit es
+                     nicht starr wirkt -->
+                <a-entity
+                    position="0 0.25 0"
+                    animation="property: rotation; from: -3 0 -4; to: 3 0 4; dir: alternate; dur: 1700; easing: easeInOutSine; loop: true"
+                >
+                  <!-- Kokosnüsse -->
+                  <a-sphere radius="0.04" position="0.04 -0.04 0.02" color="#5a3a1a" shadow="cast: true"></a-sphere>
+                  <a-sphere radius="0.04" position="-0.04 -0.04 0.02" color="#5a3a1a" shadow="cast: true"></a-sphere>
+                  <a-sphere radius="0.04" position="0 -0.04 -0.045" color="#5a3a1a" shadow="cast: true"></a-sphere>
+
+                  <!-- Sieben Palmwedel, rundum verteilt und nach unten
+                       hängend (X-Rotation = Neigung) -->
+                  <a-entity v-for="i in 7" :key="i" :rotation="`0 ${i * 51.4} 0`">
+                    <a-entity :rotation="`${20 + (i % 3) * 8} 0 0`">
+                      <a-sphere radius="1" scale="0.09 0.012 0.32" position="0 0 0.3" color="#2f8f3a" shadow="cast: true"></a-sphere>
+                    </a-entity>
+                  </a-entity>
+                </a-entity>
+              </a-entity>
+            </a-entity>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+    </a-entity>
+
   </a-entity>
   </a-entity>
 
